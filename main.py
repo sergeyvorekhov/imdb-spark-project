@@ -2,39 +2,69 @@ from pyspark import SparkConf
 from pyspark.sql import SparkSession, Window
 from pyspark import SparkContext
 
-from settings import TITLE_AKAS, TITLE_BASICS, TITLE_CREW, TITLE_EPISODE, TITLE_PRICIPLES, TITLE_RATINGS, NAME_BASICS
+from settings import *
 from columns import schema_acas, schema_basics, schema_crew, schema_episode, schema_name_basics , schema_principals, schema_ratings
+from read_write import read_all, read_tsv
+from transformations import *
 
-SparkContext().setLogLevel("WARN")
+SparkContext().setLogLevel("OFF")
 
+def switch(num, ss):
+
+    temp_session = None
+
+    if num == 1:
+        temp_session = read_tsv(ss, TITLE_AKAS, schema_acas)
+        task1(temp_session, FILE_1)
+    elif num == 2:
+        temp_session = read_tsv(ss, NAME_BASICS, schema_name_basics)
+        task2(temp_session, FILE_2)
+    elif num == 3:
+        temp_session = read_tsv(ss, TITLE_BASICS, schema_basics)
+        task3(temp_session, FILE_3)
+    elif num == 4:
+        base_df = read_tsv(ss, TITLE_AKAS, schema_acas)
+        second_df = read_tsv(ss, TITLE_PRICIPLES, schema_principals)
+        third_df = read_tsv(ss, NAME_BASICS, schema_name_basics)
+        task4(base_df, second_df, third_df, FILE_4)
+    elif num == 5:
+        base_df = read_tsv(ss, TITLE_AKAS, schema_acas)
+        second_df = read_tsv(ss, TITLE_BASICS, schema_basics)
+        task5(base_df, second_df, FILE_5)
+    elif num == 6:
+        pass
+    elif num == 7:
+        pass
+    elif num == 8:
+        pass
+    elif num == 9:
+        read_all(ss, 5)
 
 def main():
-
+    """ Final project internals """
     spark_session = SparkSession.builder.getOrCreate()
+    print("There are eight transformations.\n")
+    print("1. Get all titles of series/movies etc. that are available in Ukrainian.")
+    print("2. Get the list of people’s names, who were born in the 19th century.")
+    print("3. Get titles of all movies that last more than 2 hours.")
+    print("4. Get names of people, corresponding movies/series and characters they played in those films.")
+    print("5. Get information about how many adult movies/series etc. there are per region. Get the top 100 of them from the region with the biggest count to the region with the smallest one.")
+    print("6. Get information about how many episodes in each TV Series. Get the top 50 of them starting from the TV Series with the biggest quantity of episodes.")
+    print("7. Get 10 titles of the most popular movies/series etc. by each decade.")
+    print("8. Get 10 titles of the most popular movies/series etc. by each genre.\n")
+    print("9. Just test the connection to DataFrames.\n")
+    a = int(input("Please enter a number: "))
+    switch(a, spark_session)
 
+def testtask():
+    ss = SparkSession.builder.getOrCreate()
+    base_df = read_tsv(ss, TITLE_AKAS, schema_acas)
+    second_df = read_tsv(ss, TITLE_BASICS, schema_basics)
+    task5(base_df, second_df, FILE_5)
 
-    acas_df = spark_session.read.csv(TITLE_AKAS, header=True, nullValue="null", sep="\t", schema=schema_acas)
-    acas_df.show(2)
+#    read_all(ss, 500)
 
-    basics_df = spark_session.read.csv(TITLE_BASICS, header=True, sep="\t", schema=schema_basics)
-    basics_df.show(2)
-
-    crew_df = spark_session.read.csv(TITLE_CREW, header=True, sep="\t", schema=schema_crew)
-    crew_df.show(2)
-
-    episode_df = spark_session.read.csv(TITLE_EPISODE, header=True, sep="\t", schema=schema_episode)
-    episode_df.show(2)
-
-    principals_df = spark_session.read.csv(TITLE_PRICIPLES, header=True, sep="\t", schema=schema_principals)
-    principals_df.show(2)
-
-    ratings_df = spark_session.read.csv(TITLE_RATINGS, header=True, sep="\t", schema=schema_ratings)
-    ratings_df.show(2)
-
-    name_basics_df = spark_session.read.csv(NAME_BASICS, header=True, sep="\t", schema=schema_name_basics)
-    name_basics_df.show(2)
-
-""" """
 if __name__ == "__main__":
-    main()
+#    main()
+    testtask()
 
