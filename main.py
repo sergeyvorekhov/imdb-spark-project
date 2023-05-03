@@ -65,6 +65,6 @@ def testtask():
 #    read_all(ss, 500)
 
 if __name__ == "__main__":
-#    main()
-    testtask()
+    main()
+#    testtask()
 
