@@ -12,6 +12,8 @@ SparkContext().setLogLevel("OFF")
 def switch(num, ss):
 
     temp_session = None
+    second_df = None
+    third_df = None
 
     if num == 1:
         temp_session = read_tsv(ss, TITLE_AKAS, schema_acas)
@@ -23,16 +25,18 @@ def switch(num, ss):
         temp_session = read_tsv(ss, TITLE_BASICS, schema_basics)
         task3(temp_session, FILE_3)
     elif num == 4:
-        base_df = read_tsv(ss, TITLE_AKAS, schema_acas)
+        temp_session = read_tsv(ss, TITLE_AKAS, schema_acas)
         second_df = read_tsv(ss, TITLE_PRICIPLES, schema_principals)
         third_df = read_tsv(ss, NAME_BASICS, schema_name_basics)
-        task4(base_df, second_df, third_df, FILE_4)
+        task4(temp_session, second_df, third_df, FILE_4)
     elif num == 5:
-        base_df = read_tsv(ss, TITLE_AKAS, schema_acas)
+        temp_session = read_tsv(ss, TITLE_AKAS, schema_acas)
         second_df = read_tsv(ss, TITLE_BASICS, schema_basics)
-        task5(base_df, second_df, FILE_5)
+        task5(temp_session, second_df, FILE_5)
     elif num == 6:
-        pass
+        temp_session = read_tsv(ss, TITLE_EPISODE, schema_episode)
+        second_df = read_tsv(ss, TITLE_BASICS, schema_basics)
+        task6(temp_session, second_df, FILE_6)
     elif num == 7:
         pass
     elif num == 8:
@@ -58,13 +62,12 @@ def main():
 
 def testtask():
     ss = SparkSession.builder.getOrCreate()
-    base_df = read_tsv(ss, TITLE_AKAS, schema_acas)
+    base_df = read_tsv(ss, TITLE_RATINGS, schema_ratings)
     second_df = read_tsv(ss, TITLE_BASICS, schema_basics)
-    task5(base_df, second_df, FILE_5)
-
+    task7(base_df, second_df, FILE_7)
 #    read_all(ss, 500)
 
 if __name__ == "__main__":
-    main()
-#    testtask()
+#    main()
+    testtask()
 

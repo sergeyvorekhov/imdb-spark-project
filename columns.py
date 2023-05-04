@@ -1,4 +1,4 @@
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType, ArrayType, BooleanType
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, BooleanType, FloatType
 
 # Specify schema title.akas.tsv.gz
 schema_acas = StructType([
@@ -53,7 +53,7 @@ schema_principals = StructType([
 # Specify schema title.ratings.tsv.gz
 schema_ratings = StructType([
     StructField("tconst", StringType(), True),
-    StructField("averageRating", StringType(), True),
+    StructField("averageRating", FloatType(), True),
     StructField("numVotes", IntegerType(), True)
     ])
 
