@@ -38,9 +38,15 @@ def switch(num, ss):
         second_df = read_tsv(ss, TITLE_BASICS, schema_basics)
         task6(temp_session, second_df, FILE_6)
     elif num == 7:
-        pass
+        spark = SparkSession.builder.appName("pyspark_window").getOrCreate()
+        base_df = read_tsv(ss, TITLE_RATINGS, schema_ratings)
+        second_df = read_tsv(spark, TITLE_BASICS, schema_basics)
+        task7(base_df, second_df, FILE_7)
     elif num == 8:
-        pass
+        spark = SparkSession.builder.appName("pyspark_window").getOrCreate()
+        base_df = read_tsv(ss, TITLE_RATINGS, schema_ratings)
+        second_df = read_tsv(spark, TITLE_BASICS, schema_basics)
+        task8(base_df, second_df, FILE_8)
     elif num == 9:
         read_all(ss, 5)
 
@@ -62,12 +68,13 @@ def main():
 
 def testtask():
     ss = SparkSession.builder.getOrCreate()
+    spark = SparkSession.builder.appName("pyspark_window").getOrCreate()
     base_df = read_tsv(ss, TITLE_RATINGS, schema_ratings)
-    second_df = read_tsv(ss, TITLE_BASICS, schema_basics)
-    task7(base_df, second_df, FILE_7)
+    second_df = read_tsv(spark, TITLE_BASICS, schema_basics)
+    task8(base_df, second_df, FILE_8)
 #    read_all(ss, 500)
 
 if __name__ == "__main__":
-#    main()
-    testtask()
+    main()
+#    testtask()
 
